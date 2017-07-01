@@ -1,11 +1,43 @@
 local E, M = unpack(_G.yaCore);
+local lastMsg = nil
+local waitTable = {};
+local waitFrame = nil;
+
+function E:Wait(delay, func, ...)
+	if(type(delay)~="number" or type(func)~="function") then
+		return false;
+	end
+
+	if(waitFrame == nil) then
+		waitFrame = CreateFrame("Frame","WaitFrame", UIParent);
+		waitFrame:SetScript("onUpdate",function (self,elapse)
+			local count = #waitTable;
+			local i = 1;
+			while(i<=count) do
+				local waitRecord = tremove(waitTable,i);
+				local d = tremove(waitRecord,1);
+				local f = tremove(waitRecord,1);
+				local p = tremove(waitRecord,1);
+				if(d>elapse) then
+					tinsert(waitTable,i,{d-elapse,f,p});
+					i = i + 1;
+				else
+					count = count - 1;
+					f(unpack(p));
+				end
+			end
+		end);
+	end
+	tinsert(waitTable,{delay,func,{...}});
+	return true;
+end
 
 function E:Kill(object)
-    if object.UnregisterAllEvents then
-        object:UnregisterAllEvents()
-    end
-    object.Show = function() return end
-    object:Hide()
+	if object.UnregisterAllEvents then
+		object:UnregisterAllEvents()
+	end
+	object.Show = function() return end
+	object:Hide()
 end
 
 function E:Strip(object, kill)
@@ -22,7 +54,10 @@ function E:Strip(object, kill)
 end
 
 function E:Print(...)
-	print('|cff5BAAE3ya|rUI:', ...)
+	if lastMsg ~= ... then
+		print('|cff5BAAE3ya|rUI:', ...)
+		lastMsg = ...
+	end
 end
 
 function E:TableToLuaString(inTable)
@@ -71,19 +106,21 @@ function E:TableToLuaString(inTable)
 end
 
 function E:SkinFrame(f)
-	local overlay = CreateFrame("Frame", f:GetName().."_overlay", UIParent)
-	overlay:SetAllPoints(f)
-	overlay:SetWidth(f:GetWidth())
-	overlay:SetHeight(f:GetHeight())
-	overlay:SetFrameStrata("BACKGROUND")
-	overlay:SetFrameLevel(f:GetFrameLevel() - 1)
+	local skin = CreateFrame("Frame", f:GetName().."_yui", UIParent)
+	skin:SetAllPoints(f)
+	skin:SetWidth(f:GetWidth())
+	skin:SetHeight(f:GetHeight())
+	skin:SetFrameStrata("BACKGROUND")
+	skin:SetFrameLevel(f:GetFrameLevel() - 1)
 
-	local backdrop = CreateFrame("Frame", nil, overlay)
+	local backdrop = CreateFrame("Frame", nil, skin)
 	backdrop:SetPoint("TOPLEFT",-5,5)
 	backdrop:SetPoint("BOTTOMRIGHT",5,-5)
 	backdrop:SetFrameLevel(f:GetFrameLevel() - 1)
 
 	E:SkinBackdrop(backdrop)
+
+	return skin
 end
 
 function E:SkinBackdrop(f)

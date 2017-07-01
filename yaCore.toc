@@ -1,4 +1,4 @@
-## Interface: 70000
+## Interface: 73000
 ## Author: Nonus - https://github.com/Nonus
 ## Title: |cffFA2384ya|rCore
 ## Version: 1.3
