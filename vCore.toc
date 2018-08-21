@@ -1,6 +1,6 @@
 ## Interface: 73000
 ## Author: Nonus - https://github.com/Nonus
-## Title: |cffFA2384ya|rCore
+## Title: |cffFA2384v|rCore
 ## Version: 1.3
 
 init.lua

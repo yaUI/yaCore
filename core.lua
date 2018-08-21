@@ -1,4 +1,4 @@
-local E, M = unpack(_G.yaCore);
+local E, M = unpack(_G.vCore);
 local lastMsg = nil
 local waitTable = {};
 local waitFrame = nil;
@@ -55,7 +55,7 @@ end
 
 function E:Print(...)
 	if lastMsg ~= ... then
-		print('|cff5BAAE3ya|rUI:', ...)
+		print('|cffFA2384v|rUI:', ...)
 		lastMsg = ...
 	end
 end
@@ -106,27 +106,39 @@ function E:TableToLuaString(inTable)
 end
 
 function E:SkinFrame(f)
-	local skin = CreateFrame("Frame", f:GetName().."_yui", UIParent)
+	local skin = CreateFrame("Frame", f:GetName().."_vui", UIParent)
 	skin:SetAllPoints(f)
 	skin:SetWidth(f:GetWidth())
 	skin:SetHeight(f:GetHeight())
 	skin:SetFrameStrata("BACKGROUND")
 	skin:SetFrameLevel(f:GetFrameLevel() - 1)
 
-	local backdrop = CreateFrame("Frame", nil, skin)
-	backdrop:SetPoint("TOPLEFT",-5,5)
-	backdrop:SetPoint("BOTTOMRIGHT",5,-5)
-	backdrop:SetFrameLevel(f:GetFrameLevel() - 1)
+	E:CreateBackdrop(skin)
 
-	E:SkinBackdrop(backdrop)
+	f.skin = skin
 
 	return skin
 end
 
-function E:SkinBackdrop(f)
+function E:CreateBackdrop(f)
+	local backdrop = CreateFrame("Frame", nil, f)
+	backdrop:SetPoint("TOPLEFT", -5, 5)
+	backdrop:SetPoint("BOTTOMRIGHT", 5, -5)
+	backdrop:SetFrameLevel(0)
+
+	E:SkinBackdrop(backdrop)
+
+	f.backdrop = skin
+
+	return backdrop
+end
+
+function E:SkinBackdrop(f, alpha)
+	if not alpha then alpha = .6 end
+
 	f:SetBackdrop({ 
-		bgFile = M:Fetch("yaui", "backdrop"), 
-		edgeFile = M:Fetch("yaui", "backdropEdge"),
+		bgFile = M:Fetch("vui", "backdrop"), 
+		edgeFile = M:Fetch("vui", "backdropEdge"),
 		tile = false,
 		tileSize = 0, 
 		edgeSize = 5, 
@@ -135,9 +147,9 @@ function E:SkinBackdrop(f)
 			right = 5, 
 			top = 5, 
 			bottom = 5,
-			},
+		}
 	});
 	
-	f:SetBackdropColor(0,0,0,0.6)
-	f:SetBackdropBorderColor(0,0,0,0.6)
+	f:SetBackdropColor(0, 0, 0, alpha)
+	f:SetBackdropBorderColor(0, 0, 0, alpha)
 end
