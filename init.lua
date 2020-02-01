@@ -1,9 +1,16 @@
 local AddOnName, AddonTable = ...;
+local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceHook-3.0');
+AddOn.callbacks = AddOn.callbacks or LibStub("CallbackHandler-1.0"):New(AddOn)
+local LSM = LibStub("LibSharedMedia-3.0")
 local _G = _G
 
 _G.yaCore = {}
 
 yaCore = _G.yaCore
+
+
+yaCore[1] = AddOn
+yaCore[2] = LSM
 
 yaCore[1].Unit = UnitGUID("player")
 yaCore[1].Name = UnitName("player")
