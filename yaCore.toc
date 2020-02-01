@@ -1,0 +1,7 @@
+## Interface: 80000
+## Author: Lofbergio - https://github.com/lofbergio
+## Title: |cffFA2384ya|rCore
+## Version: 1.3
+
+init.lua
+core.lua

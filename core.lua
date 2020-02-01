@@ -1,4 +1,4 @@
-local E, M = unpack(_G.vCore);
+local E, M = unpack(_G.yaCore);
 local lastMsg = nil
 local waitTable = {};
 local waitFrame = nil;
@@ -55,7 +55,7 @@ end
 
 function E:Print(...)
 	if lastMsg ~= ... then
-		print('|cffFA2384v|rUI:', ...)
+		print('|cffFA2384ya|rUI:', ...)
 		lastMsg = ...
 	end
 end
@@ -106,7 +106,7 @@ function E:TableToLuaString(inTable)
 end
 
 function E:SkinFrame(f)
-	local skin = CreateFrame("Frame", f:GetName().."_vui", UIParent)
+	local skin = CreateFrame("Frame", f:GetName().."_yaui", UIParent)
 	skin:SetAllPoints(f)
 	skin:SetWidth(f:GetWidth())
 	skin:SetHeight(f:GetHeight())
@@ -137,8 +137,8 @@ function E:SkinBackdrop(f, alpha)
 	if not alpha then alpha = .6 end
 
 	f:SetBackdrop({ 
-		bgFile = M:Fetch("vui", "backdrop"), 
-		edgeFile = M:Fetch("vui", "backdropEdge"),
+		bgFile = M:Fetch("yaui", "backdrop"), 
+		edgeFile = M:Fetch("yaui", "backdropEdge"),
 		tile = false,
 		tileSize = 0, 
 		edgeSize = 5, 
