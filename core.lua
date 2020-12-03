@@ -121,7 +121,7 @@ function E:SkinFrame(f)
 end
 
 function E:CreateBackdrop(f)
-	local backdrop = CreateFrame("Frame", nil, f)
+	local backdrop = CreateFrame("Frame", nil, f, "BackdropTemplate")
 	backdrop:SetPoint("TOPLEFT", -5, 5)
 	backdrop:SetPoint("BOTTOMRIGHT", 5, -5)
 	backdrop:SetFrameLevel(0)
@@ -135,6 +135,7 @@ end
 
 function E:SkinBackdrop(f, alpha)
 	if not alpha then alpha = .6 end
+	Mixin(f, BackdropTemplateMixin)
 
 	f:SetBackdrop({ 
 		bgFile = M:Fetch("yaui", "backdrop"), 
